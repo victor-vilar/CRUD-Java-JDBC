@@ -34,7 +34,7 @@ public class ClienteDAO {
      * @since Dez 2021
      * @version 1.0
      * @param con objeto de conexao com o banco de dados.
-     * @return 
+     * @return Um HashMap contendo todos os clientes cadastrados no banco de dados
      */
         
     public Map<String, String> buscarClientes(Connection con){
