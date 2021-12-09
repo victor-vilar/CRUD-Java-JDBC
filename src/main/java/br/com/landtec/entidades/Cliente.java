@@ -26,10 +26,18 @@ public class Cliente {
         this.nome = nome;
     }
     
+    /**
+     * setar o nome do cliente
+     * @param nome variavel do tipo string para ser armazenada na variavel nome
+     */
     public void setNome(String nome){
         this.nome = nome;
     }
     
+    /**
+     * pegar o nome do cliente
+     * @return string contendo o nome do cliente
+     */
     public String getNome(){
         return this.nome;
     }

@@ -79,6 +79,32 @@ public class ClienteDAO {
         }
     }
     
+    /**
+     * metodo para deletar o cliente pelo id
+     * @author Victor Hugo Santos Vilar
+     * @since Dez 2021
+     * @param idCliente inteiro que representa o id do cliente no banco de dados
+     * @param con conexao com o banco de datos
+     * @return inteiro que representa a quantidade de linhas afetadas
+     */
+    public int deletarCliente(int idCliente, Connection con){
+        PreparedStatement stt;
+        String sql ="DELETE FROM clientes WHERE id_cliente = ?";
+        int numeroDeLinhasAfetadas = 0;
+        try{
+            PreparedStatement pstt = con.prepareStatement(sql);
+            pstt.setInt(1, idCliente);
+            numeroDeLinhasAfetadas = pstt.executeUpdate();
+            pstt.close();
+            con.close();
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
+        
+        return numeroDeLinhasAfetadas;
+    }
+    
     
     
     
