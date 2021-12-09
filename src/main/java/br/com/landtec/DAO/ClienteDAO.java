@@ -104,7 +104,31 @@ public class ClienteDAO {
         
         return numeroDeLinhasAfetadas;
     }
-    
+    /**
+     * Metodo para atualizar dados do cliente no banco de dados
+     * @param idCliente int que representa o id do cliente
+     * @param clienteNome String que será o novo nome que será atualizar
+     * @param con conexao com o banco de dados
+     * @return  int que representa o numero de linhas que foram afetadas
+     */
+    public int atualizarInformacoesCliente(int idCliente, String clienteNome, Connection con){
+        PreparedStatement stt;
+        String sql ="UPDATE clientes SET cliente_nome = ? WHERE id_cliente = ?";
+        int numeroDeLinhasAfetadas = 0;
+        try{
+            PreparedStatement pstt = con.prepareStatement(sql);
+            pstt.setString(1,clienteNome);
+            pstt.setInt(2, idCliente);
+            numeroDeLinhasAfetadas = pstt.executeUpdate();
+            pstt.close();
+            con.close();
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }   
+        
+        return numeroDeLinhasAfetadas; 
+    }
     
     
     

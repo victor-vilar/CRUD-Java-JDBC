@@ -24,22 +24,13 @@ public class testeBuscarClientesDAO {
         listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
         listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
     
-        Cliente cliente = new Cliente("Testezinho");
-        clienteDao.cadastrarNovoCliente(cliente, Conexao.pegarConexao());
+        System.out.println("----------");
+        
+        int numeroDeLinhasAfetada = clienteDao.atualizarInformacoesCliente(17, "Manoelson", Conexao.pegarConexao());
+        System.out.println("Total de Linhas Atualizadas: " + numeroDeLinhasAfetada);
         listaClientes.clear();
-        System.out.println("--------");
         listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
         listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
-        
-        
-        int numeroDeLinhas = clienteDao.deletarCliente(15, Conexao.pegarConexao());
-        listaClientes.clear();
-        System.out.println("--------\n total de linhas deletadas = " + numeroDeLinhas);
-        
-        listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
-        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
-        
-        
     
     }
     
