@@ -6,8 +6,8 @@
 package br.com.landtec.testes;
 
 import br.com.landtec.DAO.ClienteDAO;
+import br.com.landtec.entidades.Cliente;
 import br.com.landtec.entidades.Conexao;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +23,15 @@ public class testeBuscarClientesDAO {
         Map<String,String> listaClientes = new HashMap<String,String>();
         listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
         listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+    
+        Cliente cliente = new Cliente("Testezinho");
+        clienteDao.cadastrarNovoCliente(cliente, Conexao.pegarConexao());
+        listaClientes.clear();
+        System.out.println("--------");
+        listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
+        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+        
+    
     }
     
 }

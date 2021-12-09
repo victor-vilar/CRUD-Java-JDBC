@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import br.com.landtec.entidades.Cliente;
+import java.sql.PreparedStatement;
 
 /**
  * Classe para acessar e manipular a tabela <b>cliente</b> no banco de dados.
@@ -38,12 +39,8 @@ public class ClienteDAO {
      */
         
     public Map<String, String> buscarClientes(Connection con){
-        
-
         Statement stt;
-   
         try{
-            
             stt = con.createStatement();
             ResultSet rst =  stt.executeQuery("SELECT * FROM clientes");
             while(rst.next()){ 
@@ -51,8 +48,8 @@ public class ClienteDAO {
             }
             stt.close();
             rst.close();
+            con.close();
         }
-        
         catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -60,9 +57,26 @@ public class ClienteDAO {
         
         return listaClientes;
     }
+    /**
+     * Cadastrar novo cliente no banco de dados
+     * @param cliente variavel que representa um objeto do tipo cliente.
+     * @param con conexão com o banco de dados.
+     * @since Dez 2021.
+     */
     
-    public void cadastrarNovoCliente(Cliente cliente){
-        
+    public void cadastrarNovoCliente(Cliente cliente, Connection con){
+        PreparedStatement stt;
+        String sql ="INSERT INTO clientes(cliente_nome)VALUES(?)";
+        try{
+            PreparedStatement pstt = con.prepareStatement(sql);
+            pstt.setString(1, cliente.getNome());
+            pstt.execute();
+            pstt.close();
+            con.close();
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
     
     
