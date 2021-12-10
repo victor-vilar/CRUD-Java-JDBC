@@ -19,7 +19,6 @@ public class Cliente {
     
     /**
      * @since Dez 2021
-     * @author Victor Hugo Santos Vilar
      * @param nome variavel do tipo String que ira ser inserida no nome. 
      */
     public Cliente (String nome){
@@ -28,6 +27,7 @@ public class Cliente {
     
     /**
      * setar o nome do cliente
+     * @since Dez 2021
      * @param nome variavel do tipo string para ser armazenada na variavel nome
      */
     public void setNome(String nome){
@@ -36,6 +36,7 @@ public class Cliente {
     
     /**
      * pegar o nome do cliente
+     * @since Dez 2021
      * @return string contendo o nome do cliente
      */
     public String getNome(){

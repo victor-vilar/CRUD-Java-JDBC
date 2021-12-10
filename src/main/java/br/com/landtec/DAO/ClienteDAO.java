@@ -21,7 +21,6 @@ import java.sql.PreparedStatement;
  * @version 1.0
  */
 
-
 public class ClienteDAO {
     /**
      * Um Map para poder pegar o id do cliente e o seu nome. Serve para conseguir retornar
@@ -109,7 +108,7 @@ public class ClienteDAO {
      * @param idCliente int que representa o id do cliente
      * @param clienteNome String que será o novo nome que será atualizar
      * @param con conexao com o banco de dados
-     * @return  int que representa o numero de linhas que foram afetadas
+     * @return int que representa o numero de linhas que foram afetadas
      */
     public int atualizarInformacoesCliente(int idCliente, String clienteNome, Connection con){
         PreparedStatement stt;
