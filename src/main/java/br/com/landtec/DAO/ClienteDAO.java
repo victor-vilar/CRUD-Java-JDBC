@@ -35,6 +35,7 @@ public class ClienteDAO {
     private static final String DELETAR = "DELETE FROM clientes WHERE id_cliente = ?";
     private static final String ATUALIZAR = "UPDATE clientes SET cliente_nome = ? WHERE id_cliente = ?";
     private static final String LISTAR = "SELECT * FROM CLIENTES";
+    private static final String BUSCAR_CLIENTE = "SELECT * FROM CLIENTES WHERE id_cliente = ?";
     
     /**
      * Um Map para poder pegar o id do cliente e o seu nome. Serve para conseguir retornar
@@ -47,7 +48,6 @@ public class ClienteDAO {
      * @author Victor Hugo Santos Vilar.
      * @since Dez 2021
      * @version 1.1
-     * @param con objeto de conexao com o banco de dados.
      * @return Uma List de clientes contendo todos os clientes cadastrados no banco de dados
      */
         
@@ -97,8 +97,7 @@ public class ClienteDAO {
      * metodo para deletar o cliente pelo id
      * @author Victor Hugo Santos Vilar
      * @since Dez 2021
-     * @param idCliente inteiro que representa o id do cliente no banco de dados
-     * @param con conexao com o banco de datos
+     * @param cliente um cliente que esta no banco de dados
      * @return inteiro que representa a quantidade de linhas afetadas
      */
     public int deletarCliente(Cliente cliente){
@@ -117,9 +116,7 @@ public class ClienteDAO {
     }
     /**
      * Metodo para atualizar dados do cliente no banco de dados
-     * @param idCliente int que representa o id do cliente
-     * @param clienteNome String que será o novo nome que será atualizar
-     * @param con conexao com o banco de dados
+     * @param cliente no banco de dados
      * @return int que representa o numero de linhas que foram afetadas
      */
     public int atualizarInformacoesCliente(Cliente cliente){
@@ -139,7 +136,31 @@ public class ClienteDAO {
         return numeroDeLinhasAfetadas; 
     }
     
-    
-    
+    /**
+     * Buscar um cliente especifico pelo id
+     * @param id do cliente no banco de dados
+     * @return um objeto do tipo cliente 
+     */
+    public Cliente buscarCliente(int id){
+        Cliente cliente = null;
+        try{
+            Connection con = Conexao.pegarConexao();
+            PreparedStatement pstm = con.prepareStatement(BUSCAR_CLIENTE);
+            pstm.setInt(1,id);
+            ResultSet rst = pstm.executeQuery();
+            while(rst.next()){
+                cliente = new Cliente(rst.getString("cliente_nome"));
+                cliente.setId(rst.getInt("id_cliente"));
+            }
+            Conexao.FecharConexao(con,pstm,rst);
+            
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return cliente;
+        
+    }
     
 }

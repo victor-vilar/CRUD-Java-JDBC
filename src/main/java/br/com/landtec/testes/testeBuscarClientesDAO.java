@@ -7,9 +7,8 @@ package br.com.landtec.testes;
 
 import br.com.landtec.DAO.ClienteDAO;
 import br.com.landtec.entidades.Cliente;
-import br.com.landtec.entidades.Conexao;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,27 +19,42 @@ public class testeBuscarClientesDAO {
     public static void main(String[] args){
         
         ClienteDAO clienteDao = new ClienteDAO();
-        Map<String,String> listaClientes = new HashMap<String,String>();
+        List<Cliente> listaClientes;
+        Cliente cliente1 = new Cliente("Joares");
         
+        //EXIBIR
         System.out.println("Buscar Clientes");
         listaClientes = clienteDao.buscarClientes();
-        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+        listaClientes.forEach(obj -> System.out.println("Id: " + obj.getId() + " - Nome: " + obj.getNome() ));
         System.out.println("----------");
         
+        
+        //INSERIR
+        System.out.println("Inserir");
+        clienteDao.cadastrarNovoCliente(cliente1);
+        listaClientes.clear();
+        listaClientes = clienteDao.buscarClientes();
+        listaClientes.forEach(obj -> System.out.println("Id: " + obj.getId() + " - Nome: " + obj.getNome() ));
+        System.out.println("----------");
+        
+        
+        //ATUALIZAR
         System.out.println("Atualizar");
-         int numeroDeLinhasAfetada = clienteDao.atualizarInformacoesCliente(17, "Gregorio");
+        cliente1.setNome("Marcondes");
+        int numeroDeLinhasAfetada = clienteDao.atualizarInformacoesCliente(cliente1);
         System.out.println("Total de Linhas Atualizadas: " + numeroDeLinhasAfetada);
         listaClientes.clear();
         listaClientes = clienteDao.buscarClientes();
-        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+        listaClientes.forEach(obj -> System.out.println("Id: " + obj.getId() + " - Nome: " + obj.getNome() ));
         System.out.println("----------");
         
         
+        //DELETAR
         System.out.println("Deletar");
-        clienteDao.deletarCliente(17);
+        clienteDao.deletarCliente(cliente1);
         listaClientes.clear();
         listaClientes = clienteDao.buscarClientes();
-        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+        listaClientes.forEach(obj -> System.out.println("Id: " + obj.getId() + " - Nome: " + obj.getNome() ));
         System.out.println("----------");
         
         
