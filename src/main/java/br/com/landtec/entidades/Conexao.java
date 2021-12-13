@@ -7,6 +7,8 @@ package br.com.landtec.entidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -30,4 +32,67 @@ public abstract class Conexao {
         return conn;
     }
     
+    /**
+     * Fecha a conexao com banco de dados
+     * @param con varivavel do tipo Connection que represta a conexao com o banco d
+     * dados
+     */
+    public static void FecharConexao(Connection con){
+        
+        try{
+            if(con != null){
+                con.close();
+                System.out.println("Conexao Fechada");
+            }   
+        }
+        catch(Exception e){
+            System.out.println("Conexão não foi fechada: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Fecha conexao com banco de dados
+     * @param con varivavel do tipo Connection que represta a conexao com o banco de dados
+     * @param pstm representa um preparedStatement
+     */
+    
+    public static void FecharConexao(Connection con, PreparedStatement pstm){
+        
+        try{
+            if(con != null){
+                FecharConexao(con);   
+            }   
+            if(pstm != null){
+                pstm.close();
+                System.err.println("PreparedStatement fechado com sucesso !");
+            }
+        }
+        catch(Exception e){
+            System.out.println("Conexão não foi fechada: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * 
+     * Fecha conexao com banco de dados
+     * @param con varivavel do tipo Connection que represta a conexao com o banco de dados
+     * @param pstm representa um preparedStatement
+     * @param rs  representa um resultset
+     */
+    
+    public static void FecharConexao(Connection con, PreparedStatement pstm, ResultSet rs){
+        
+        try{
+            if(con != null && pstm != null){
+                FecharConexao(con, pstm);   
+            }   
+            if(rs != null){
+                pstm.close();
+                System.err.println("ResultSet fechado com sucesso !");
+            }
+        }
+        catch(Exception e){
+            System.out.println("Conexão não foi fechada: " + e.getMessage());
+        }        
+    }
 }
