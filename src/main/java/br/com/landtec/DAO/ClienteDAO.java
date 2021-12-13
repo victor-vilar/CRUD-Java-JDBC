@@ -51,9 +51,10 @@ public class ClienteDAO {
      * @return Um HashMap contendo todos os clientes cadastrados no banco de dados
      */
         
-    public Map<String, String> buscarClientes(Connection con){
+    public Map<String, String> buscarClientes(){
         PreparedStatement pstm;
         try{
+            Connection con = Conexao.pegarConexao();
             pstm = con.prepareStatement(LISTAR);
             ResultSet rst =  pstm.executeQuery();
             while(rst.next()){ 
@@ -75,9 +76,10 @@ public class ClienteDAO {
      * @since Dez 2021.
      */
     
-    public void cadastrarNovoCliente(Cliente cliente, Connection con){
+    public void cadastrarNovoCliente(Cliente cliente){
         PreparedStatement pstm;
         try{
+            Connection con = Conexao.pegarConexao();
             pstm = con.prepareStatement(INSERIR);
             pstm.setString(1, cliente.getNome());
             pstm.execute();
@@ -97,9 +99,10 @@ public class ClienteDAO {
      * @param con conexao com o banco de datos
      * @return inteiro que representa a quantidade de linhas afetadas
      */
-    public int deletarCliente(int idCliente, Connection con){
+    public int deletarCliente(int idCliente){
         int numeroDeLinhasAfetadas = 0;
         try{
+            Connection con = Conexao.pegarConexao();
             PreparedStatement pstm = con.prepareStatement(DELETAR);
             pstm.setInt(1, idCliente);
             numeroDeLinhasAfetadas = pstm.executeUpdate();
@@ -117,9 +120,10 @@ public class ClienteDAO {
      * @param con conexao com o banco de dados
      * @return int que representa o numero de linhas que foram afetadas
      */
-    public int atualizarInformacoesCliente(int idCliente, String clienteNome, Connection con){
+    public int atualizarInformacoesCliente(int idCliente, String clienteNome){
         int numeroDeLinhasAfetadas = 0;
         try{
+            Connection con = Conexao.pegarConexao();
             PreparedStatement pstm = con.prepareStatement(ATUALIZAR);
             pstm.setString(1,clienteNome);
             pstm.setInt(2, idCliente);

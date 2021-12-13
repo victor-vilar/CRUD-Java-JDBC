@@ -21,17 +21,31 @@ public class testeBuscarClientesDAO {
         
         ClienteDAO clienteDao = new ClienteDAO();
         Map<String,String> listaClientes = new HashMap<String,String>();
-        listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
+        
+        System.out.println("Buscar Clientes");
+        listaClientes = clienteDao.buscarClientes();
         listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
-    
         System.out.println("----------");
         
-        int numeroDeLinhasAfetada = clienteDao.atualizarInformacoesCliente(17, "Manoelson", Conexao.pegarConexao());
+        System.out.println("Atualizar");
+         int numeroDeLinhasAfetada = clienteDao.atualizarInformacoesCliente(17, "Gregorio");
         System.out.println("Total de Linhas Atualizadas: " + numeroDeLinhasAfetada);
         listaClientes.clear();
-        listaClientes = clienteDao.buscarClientes(Conexao.pegarConexao());
+        listaClientes = clienteDao.buscarClientes();
         listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
-    
+        System.out.println("----------");
+        
+        
+        System.out.println("Deletar");
+        clienteDao.deletarCliente(17);
+        listaClientes.clear();
+        listaClientes = clienteDao.buscarClientes();
+        listaClientes.forEach((chave,valor) -> System.out.println("Chave:" + chave + ", Valor: " + valor ));
+        System.out.println("----------");
+        
+        
+        
+        
     }
     
 }
