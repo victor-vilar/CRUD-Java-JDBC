@@ -12,7 +12,12 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import br.com.landtec.entidades.Cliente;
+import br.com.landtec.entidades.Conexao;
 import java.sql.PreparedStatement;
+
+
+
+
 
 /**
  * Classe para acessar e manipular a tabela <b>cliente</b> no banco de dados.
@@ -22,6 +27,15 @@ import java.sql.PreparedStatement;
  */
 
 public class ClienteDAO {
+    
+    /**
+     * constantes da classe
+     */
+    private static final String INSERIR = "INSERT INTO clientes(cliente_nome)VALUES(?)";
+    private static final String DELETAR = "DELETE FROM clientes WHERE id_cliente = ?";
+    private static final String ATUALIZAR = "UPDATE clientes SET cliente_nome = ? WHERE id_cliente = ?";
+    private static final String LISTAR = "SELECT * FROM CLIENTES";
+    
     /**
      * Um Map para poder pegar o id do cliente e o seu nome. Serve para conseguir retornar
      */
@@ -38,16 +52,14 @@ public class ClienteDAO {
      */
         
     public Map<String, String> buscarClientes(Connection con){
-        Statement stt;
+        PreparedStatement pstm;
         try{
-            stt = con.createStatement();
-            ResultSet rst =  stt.executeQuery("SELECT * FROM clientes");
+            pstm = con.prepareStatement(LISTAR);
+            ResultSet rst =  pstm.executeQuery();
             while(rst.next()){ 
                 listaClientes.put(rst.getString("id_cliente"),rst.getString("cliente_nome"));
             }
-            stt.close();
-            rst.close();
-            con.close();
+            Conexao.FecharConexao(con, pstm, rst);
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
@@ -64,14 +76,13 @@ public class ClienteDAO {
      */
     
     public void cadastrarNovoCliente(Cliente cliente, Connection con){
-        PreparedStatement stt;
-        String sql ="INSERT INTO clientes(cliente_nome)VALUES(?)";
+        PreparedStatement pstm;
         try{
-            PreparedStatement pstt = con.prepareStatement(sql);
-            pstt.setString(1, cliente.getNome());
-            pstt.execute();
-            pstt.close();
-            con.close();
+            pstm = con.prepareStatement(INSERIR);
+            pstm.setString(1, cliente.getNome());
+            pstm.execute();
+            Conexao.FecharConexao(con, pstm);
+            
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
@@ -87,20 +98,16 @@ public class ClienteDAO {
      * @return inteiro que representa a quantidade de linhas afetadas
      */
     public int deletarCliente(int idCliente, Connection con){
-        PreparedStatement stt;
-        String sql ="DELETE FROM clientes WHERE id_cliente = ?";
         int numeroDeLinhasAfetadas = 0;
         try{
-            PreparedStatement pstt = con.prepareStatement(sql);
-            pstt.setInt(1, idCliente);
-            numeroDeLinhasAfetadas = pstt.executeUpdate();
-            pstt.close();
-            con.close();
-        }
+            PreparedStatement pstm = con.prepareStatement(DELETAR);
+            pstm.setInt(1, idCliente);
+            numeroDeLinhasAfetadas = pstm.executeUpdate();
+            Conexao.FecharConexao(con, pstm);
+        }      
         catch(SQLException e){
             System.out.println(e.getMessage());
         }   
-        
         return numeroDeLinhasAfetadas;
     }
     /**
@@ -111,16 +118,13 @@ public class ClienteDAO {
      * @return int que representa o numero de linhas que foram afetadas
      */
     public int atualizarInformacoesCliente(int idCliente, String clienteNome, Connection con){
-        PreparedStatement stt;
-        String sql ="UPDATE clientes SET cliente_nome = ? WHERE id_cliente = ?";
         int numeroDeLinhasAfetadas = 0;
         try{
-            PreparedStatement pstt = con.prepareStatement(sql);
-            pstt.setString(1,clienteNome);
-            pstt.setInt(2, idCliente);
-            numeroDeLinhasAfetadas = pstt.executeUpdate();
-            pstt.close();
-            con.close();
+            PreparedStatement pstm = con.prepareStatement(ATUALIZAR);
+            pstm.setString(1,clienteNome);
+            pstm.setInt(2, idCliente);
+            numeroDeLinhasAfetadas = pstm.executeUpdate();
+            Conexao.FecharConexao(con, pstm);
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
