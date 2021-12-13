@@ -20,7 +20,7 @@ public class testeBuscarClientesDAO {
         
         ClienteDAO clienteDao = new ClienteDAO();
         List<Cliente> listaClientes;
-        Cliente cliente1 = new Cliente("Joares");
+        Cliente cliente1 = new Cliente("Manorildo");
         
         //EXIBIR
         System.out.println("Buscar Clientes");
@@ -37,7 +37,11 @@ public class testeBuscarClientesDAO {
         listaClientes.forEach(obj -> System.out.println("Id: " + obj.getId() + " - Nome: " + obj.getNome() ));
         System.out.println("----------");
         
+        //BUSCAR CLIENTE ESPECIFICO
+        System.out.println("Buscar Cliente Específico");
+        cliente1 = clienteDao.buscarCliente(18);
         
+                 
         //ATUALIZAR
         System.out.println("Atualizar");
         cliente1.setNome("Marcondes");
