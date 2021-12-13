@@ -8,12 +8,12 @@ package br.com.landtec.DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Map;
 import br.com.landtec.entidades.Cliente;
 import br.com.landtec.entidades.Conexao;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -39,26 +39,28 @@ public class ClienteDAO {
     /**
      * Um Map para poder pegar o id do cliente e o seu nome. Serve para conseguir retornar
      */
-    private Map<String, String> listaClientes = new HashMap<String,String>(); 
+    private List<Cliente> listaClientes = new ArrayList<>(); 
     
     /**
      * O metodo busca os clientes que estão em na tabela "Clientes" do banco de dados
-     * da empresa. Retorna um HashMap com o Id e nome do cliente.
+     * da empresa. 
      * @author Victor Hugo Santos Vilar.
      * @since Dez 2021
-     * @version 1.0
+     * @version 1.1
      * @param con objeto de conexao com o banco de dados.
-     * @return Um HashMap contendo todos os clientes cadastrados no banco de dados
+     * @return Uma List de clientes contendo todos os clientes cadastrados no banco de dados
      */
         
-    public Map<String, String> buscarClientes(){
-        PreparedStatement pstm;
+    public List<Cliente> buscarClientes(){
+         
         try{
             Connection con = Conexao.pegarConexao();
-            pstm = con.prepareStatement(LISTAR);
+            PreparedStatement pstm = con.prepareStatement(LISTAR);
             ResultSet rst =  pstm.executeQuery();
             while(rst.next()){ 
-                listaClientes.put(rst.getString("id_cliente"),rst.getString("cliente_nome"));
+                Cliente cliente = new Cliente(rst.getString("cliente_nome"));
+                cliente.setId(rst.getInt("id_cliente"));
+                listaClientes.add(cliente);
             }
             Conexao.FecharConexao(con, pstm, rst);
         }
@@ -69,10 +71,10 @@ public class ClienteDAO {
         
         return listaClientes;
     }
+    
     /**
      * Cadastrar novo cliente no banco de dados
      * @param cliente variavel que representa um objeto do tipo cliente.
-     * @param con conexão com o banco de dados.
      * @since Dez 2021.
      */
     
@@ -99,12 +101,12 @@ public class ClienteDAO {
      * @param con conexao com o banco de datos
      * @return inteiro que representa a quantidade de linhas afetadas
      */
-    public int deletarCliente(int idCliente){
+    public int deletarCliente(Cliente cliente){
         int numeroDeLinhasAfetadas = 0;
         try{
             Connection con = Conexao.pegarConexao();
             PreparedStatement pstm = con.prepareStatement(DELETAR);
-            pstm.setInt(1, idCliente);
+            pstm.setInt(1, cliente.getId());
             numeroDeLinhasAfetadas = pstm.executeUpdate();
             Conexao.FecharConexao(con, pstm);
         }      
@@ -120,13 +122,13 @@ public class ClienteDAO {
      * @param con conexao com o banco de dados
      * @return int que representa o numero de linhas que foram afetadas
      */
-    public int atualizarInformacoesCliente(int idCliente, String clienteNome){
+    public int atualizarInformacoesCliente(Cliente cliente){
         int numeroDeLinhasAfetadas = 0;
         try{
             Connection con = Conexao.pegarConexao();
             PreparedStatement pstm = con.prepareStatement(ATUALIZAR);
-            pstm.setString(1,clienteNome);
-            pstm.setInt(2, idCliente);
+            pstm.setString(1,cliente.getNome());
+            pstm.setInt(2, cliente.getId());
             numeroDeLinhasAfetadas = pstm.executeUpdate();
             Conexao.FecharConexao(con, pstm);
         }
