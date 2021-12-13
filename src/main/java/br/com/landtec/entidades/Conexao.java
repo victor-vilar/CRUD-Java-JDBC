@@ -87,7 +87,7 @@ public abstract class Conexao {
                 FecharConexao(con, pstm);   
             }   
             if(rs != null){
-                pstm.close();
+                rs.close();
                 System.err.println("ResultSet fechado com sucesso !");
             }
         }
